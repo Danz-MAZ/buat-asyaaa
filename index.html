@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Special for You ❤️</title>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', sans-serif;
+            background-color: #fffacd;
+            color: #333;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 500px;
+            width: 90%;
+            padding: 30px;
+            background-color: #ffffff;
+            border-radius: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border: 3px solid #ffb6c1;
+        }
+
+        .image-container img {
+            width: 200px;
+            height: auto;
+            margin-bottom: 20px;
+            border-radius: 20px;
+            animation: bounce 2s infinite;
+        }
+
+        .title { font-size: 2.2em; color: #ff69b4; margin-bottom: 10px; }
+        .message { font-size: 1.2em; color: #4169e1; margin-bottom: 25px; line-height: 1.4; }
+        
+        input { 
+            padding: 15px; 
+            border: 2px solid #ffd700; 
+            border-radius: 15px; 
+            width: 80%; 
+            margin-bottom: 20px; 
+            text-align: center;
+            font-size: 1em;
+        }
+
+        button { 
+            padding: 15px 35px; 
+            background-color: #ff69b4; 
+            color: white; 
+            border: none; 
+            border-radius: 50px; 
+            cursor: pointer; 
+            font-weight: bold;
+            font-size: 1.1em;
+            transition: 0.3s;
+        }
+
+        button:hover { transform: scale(1.05); background-color: #ff1493; }
+        .hidden { display: none; }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-15px); }
+        }
+    </style>
+</head>
+<body>
+
+	<audio id="bgMusic" loop>
+        <source src="Happy Birthday.mp3" type="audio/mpeg">
+		</audio>
+
+    <div class="container">
+        <div id="welcomePage">
+            <h1 class="title">Hai Kamu! ✨</h1>
+            <p class="message">Aku punya sesuatu yang spesial nih buat kamu. Dibuka ya?</p>
+            <button onclick="initMusic()">Buka Sekarang ❤️</button>
+        </div>
+
+        <div id="step1" class="hidden">
+            <h1 class="title">Eitss..</h1>
+            <p class="message">Nama kamu siapa yaa..? lupa hehe :p</p>
+            <input type="text" id="nameInput" placeholder="Ketik namamu...">
+            <br>
+            <button onclick="startStory()">Lanjut ✨</button>
+        </div>
+
+        <div id="storyStep" class="hidden">
+            <div class="image-container">
+                <img id="storyImage" src="" alt="Story">
+            </div>
+            <h1 id="storyTitle" class="title"></h1>
+            <p id="storyText" class="message"></p>
+            <button onclick="nextStep()">Lanjut ✨</button>
+        </div>
+
+        <div id="finalStep" class="hidden">
+            <h1 class="title">Happy Birthday! ❤️</h1>
+            <p class="message"> Happy Birthday teman ku tersayang. Semoga kamu suka kejutan kecil dari aku ini. Bahagia terus ya!</p>
+            <a href="https://wa.me/+6282183370257" target="_blank" style="text-decoration:none;">
+                <button style="background-color: #25d366;">Kabari Daniel di WA ✅</button>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        let currentStep = 0;
+        let userName = "";
+        const audio = document.getElementById('bgMusic');
+
+        // PASTIKAN NAMA FOTO DI SINI SESUAI DENGAN FILE YANG KAMU PUNYA
+        const storyData = [
+            { title: "HBD Cantik!", text: "Selamat ulang tahun yang ke-17 yaa, [nama]! 🎉", img: "picture_1.png" },
+            { title: "Maaf Ya ... 🥺", text: "Maaf ya aku baru bisa kasih ginian, belum bisa kasih kado secara fisik...", img: "picture_2.png" },
+            { title: "Pemanis Hari", text: "Semoga hadiah kecil ku ini bisa bikin kamu senyum dan semangat menjalani hari ini dan hari esok!", img: "picture_3.png" },
+            { title: "Wish You All the Best!", text: "Tetap jadi [nama] yang aku kenal ya cantikk! Hope you have an amazing day! ❤️", img: "picture_4.png" }
+        ];
+
+        function initMusic() {
+            audio.play().catch(e => console.log("Musik butuh interaksi user"));
+            document.getElementById('welcomePage').classList.add('hidden');
+            document.getElementById('step1').classList.remove('hidden');
+        }
+
+        function startStory() {
+            userName = document.getElementById('nameInput').value.trim();
+            if (userName === "") return alert("Namanya diisi dulu dong manis..");
+            document.getElementById('step1').classList.add('hidden');
+            document.getElementById('storyStep').classList.remove('hidden');
+            updatePage();
+        }
+
+        function updatePage() {
+            const data = storyData[currentStep];
+            document.getElementById('storyTitle').innerText = data.title;
+            document.getElementById('storyText').innerText = data.text.replace(/\[nama\]/g, userName);
+            document.getElementById('storyImage').src = data.img;
+        }
+
+        function nextStep() {
+            currentStep++;
+            if (currentStep < storyData.length) {
+                updatePage();
+            } else {
+                document.getElementById('storyStep').classList.add('hidden');
+                document.getElementById('finalStep').classList.remove('hidden');
+            }
+        }
+    </script>
+</body>
+</html>
